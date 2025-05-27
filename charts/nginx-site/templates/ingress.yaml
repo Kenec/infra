@@ -1,0 +1,17 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroutetls
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`{{ $.Values.environment }}.example.com`)
+    kind: Rule
+    services:
+    - name: {{ .Release.Name }}
+      port: 80
+  # tls:
+  #   certResolver: myresolver
+  tls:
+    secretName: {{ printf "%s-%s" $.Values.environment .Release.Name }}
