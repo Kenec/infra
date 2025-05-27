@@ -100,3 +100,41 @@ To allow ingressRoute make use of this certificateResolver, use the following tl
   tls:
     certResolver: myresolver
 ```
+
+## Boostrapping using Terraform
+
+### 1. Traefik 
+
+```hcl
+resource "helm_release" "traefik" {
+  name       = "traefik"
+  repository = "https://traefik.github.io/charts"
+  chart      = "traefik"
+  version    = "34.3.0"
+  namespace  = "traefik"
+
+  values = [
+    "traefik/values.yaml"
+  ]
+}
+```
+
+### 2. Ngnix static site
+
+
+```hcl
+resource "helm_release" "nginx" {
+  name       = "nginx-site"
+  chart      = "./charts/nginx-site"
+  namespace  = "dev"
+
+  values = [
+    "dev-values.yaml"
+  ]
+}
+```
+
+### 3. Setup GKE cluster
+
+We can use the official GKE terraform module to boostrap the kubernetes cluster  
+https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/latest
