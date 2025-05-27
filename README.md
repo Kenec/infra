@@ -3,7 +3,15 @@
 A sample deployment of nginx static site with traefik proxy on local kubernetes (eg: Minikube).
 
 
-## Setup with Self Signed Certificate
+## Setup
+You can setup this locally on your minikube by running:
+```sh
+make all ENVIRONMENT=dev
+```
+
+NB: To be able able to access the static site with the domain `dev.example.com`, you are required to add the domain to your `/etc/hosts` files and then turn on `minikube tunnel`. 
+
+## Manual Setup
 
 ### 1. Setup minikube
 ```sh
@@ -58,7 +66,7 @@ curl -k https://dev.example.com
 ```
 
 ### 10. Deploy Prod  
-To deploy prod in the `prod` namespace, repeat steps 7 while referencing the prod values file and chart name.
+To deploy prod in the `prod` namespace, repeat steps 5 and 7 while referencing the prod values file and chart name.
 
 eg:
 
@@ -67,7 +75,7 @@ helm upgrade --install nginx-prod ./charts/nginx-site -n prod -f ./charts/nginx-
 ```
 
 
-## Setup with Lets-encrypt
+## Use Lets-encrypt
 
 To deploy the setup with an ACME provider like Let's Encrypt for automatic certificate generation
 
